@@ -1,7 +1,10 @@
 <template>
     <div class="about">
-    <h1>Test {{name}} protocol here.</h1>
+    <h1>Test {{protocol_name}} protocol here.</h1>
     <h1>{{handshake}}</h1>
+    <br>
+    <button @click="getIntent">GET</button>
+    <button @click="runParse">RUN</button>
     </div>
 </template>
 
@@ -9,25 +12,36 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import VueAxios from "vue-axios";
 import axios from 'axios';
+import store from '@/store.ts'
 
-@Component
-export default class Medina extends Vue {
-    @Prop() name!: string;
-    @Prop() handshake!: string;
+export default Vue.extend({
+    //props: ['name', 'protocol_name'],
+    data() {
+        return {
+            name: "medina_view",
+            protocol_name: "medina",
+            handshake: store.state.medinaState,
+        }
+    },
+    methods: { 
+        getIntent() {
+            store.commit('medinaInit');
+        },
+        runParse() {
+            axios.get('http://localhost:1001/parse')
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
+    },
+    computed: {
 
-    created() {
-        this.name = "medina";
-
-        axios.get('http://localhost:1001/')
-        .then(res => {
-            console.log(res)
-            this.handshake = res.data
-        })
-        .catch(e => {
-            console.log(e)
-        })
     }
-}
+});
+
 </script>
 
 <style scoped>
