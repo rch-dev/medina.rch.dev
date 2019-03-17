@@ -4,7 +4,8 @@
     <h1>{{handshake}}</h1>
     <br>
     <button @click="getIntent">GET</button>
-    <button @click="runParse">RUN</button>
+    <br>
+    Init: <button @click="initSite">SITE</button> | <button @click="initMotifs">MOTIFS</button>
     </div>
 </template>
 
@@ -27,15 +28,24 @@ export default Vue.extend({
         getIntent() {
             store.commit('medinaInit');
         },
-        runParse() {
-            axios.get('http://localhost:1001/parse')
+        initSite() {
+            axios.get('http://localhost:1001/init/site')
                 .then(res => {
                     console.log(res);
                 })
                 .catch(e => {
                     console.log(e);
                 })
-        }
+        },
+        initMotifs() {
+            axios.get('http://localhost:1001/init/motifs')
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        },
     },
     computed: {
 
